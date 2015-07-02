@@ -13,7 +13,8 @@ module Slacker
         @usernames = username_datastore
       end
 
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /i am (.*) on jira/i do |message, match|
           username = match.captures[0]
           @usernames.handle_username_change(username, message)

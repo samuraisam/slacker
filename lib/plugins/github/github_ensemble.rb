@@ -6,7 +6,8 @@ require_relative '../plugin'
 module Slacker
   module Plugins
     class GitHubEnsemble < Plugin
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         identity_manager = ::GitHubIdentityManager.new(robot)
 
         robot.plug(GitHubIdentityPlugin.new(identity_manager))

@@ -1,3 +1,5 @@
+require 'logging'
+
 module Slacker
   module Adapters
     class Adapter
@@ -6,8 +8,9 @@ module Slacker
       # Public - iniitalizes an adapter
       #
       # robot - the robot to relay messages to
-      def initialize(robot)
+      def initialize(robot, options = {})
         @robot = robot
+        @logger = options[:logger] || Logger.new(STDERR)
       end
 
       # Public - sends a message back to the chat room

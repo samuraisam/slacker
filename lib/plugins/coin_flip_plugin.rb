@@ -3,7 +3,8 @@ require_relative 'plugin'
 module Slacker
   module Plugins
     class CoinFlipPlugin < Plugin
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /(throw|flip|toss) a coin/i do |message|
           message << "I get... #{random_side}!"
         end

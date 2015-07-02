@@ -11,7 +11,8 @@ module Slacker
       @imgur = ENV["IMGUR_CLIENT_ID"] ? Imgur.new(ENV["IMGUR_CLIENT_ID"]) : nil
     end
 
-    def ready(robot)
+    def ready(robot, options = {})
+      super(robot, options)
       robot.respond /(?:(?:graph me)|(?:(?:show|get|fetch) me a graph of)) (.*)/ do |message, match|
         graph_id = match[1]
         graphite_url = @graphite_api.graph_url_for graph_id

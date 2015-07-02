@@ -6,7 +6,8 @@ module Slacker
       @graphite_api = graphite_api
     end
 
-    def ready(robot)
+    def ready(robot, options = {})
+      super(robot, options)
       robot.respond /(?:(?:(?:show me|query)\s)?graphs matching|(?:graph\s)?search me) (.*)/i do |message, match|
         query = match[1]
         matching_graphs = @graphite_api.expand(query)

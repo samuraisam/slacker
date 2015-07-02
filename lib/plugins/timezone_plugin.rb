@@ -3,7 +3,8 @@ require_relative 'plugin'
 module Slacker
   module Plugins
     class TimezonePlugin < Plugin
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /I live in GMT(\+|-)(\d)/i do |message, matches|
           time_offset = "#{matches[1]}#{matches[2]}"
 

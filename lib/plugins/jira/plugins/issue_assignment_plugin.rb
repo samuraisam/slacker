@@ -11,7 +11,8 @@ module Slacker
         @usernames = username_datastore
       end
 
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /assign (\w{3,4}-\d*) to @?(.*)/i do |message, match|
           issue_key = match.captures[0]
           assignee = resolve_assignee(match.captures[1], message, robot)

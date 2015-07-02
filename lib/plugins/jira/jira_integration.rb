@@ -10,7 +10,8 @@ require_relative './plugins/state_change_plugin.rb'
 module Slacker
   module Plugins
     class JiraIntegration < Plugin
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         configure_jiralicious
         datastore = ::Slacker::JiraDatastore.new(robot)
 

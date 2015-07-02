@@ -5,7 +5,8 @@ require_relative 'plugin'
 module Slacker
   module Plugins
     class RememberPlugin < Plugin
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /remember (.*) is (.*)/i do |message, match|
           key, value = match[1], match[2]
           remember(key, value, robot)

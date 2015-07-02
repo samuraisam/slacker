@@ -15,7 +15,8 @@ module Slacker
         }
       end
 
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /(?:mark (\w{3,4}-\d*) as (?:completed|done|resolved))|(?:(?:close|resolve) (\w{3,4}-\d*))/i do |message, match|
           issue_id = (match[1] || match[2]).upcase
 

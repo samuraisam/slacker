@@ -9,13 +9,15 @@ module Slacker
   class Robot
     attr_reader :name, :redis, :adapter
 
-    def initialize(name)
+    def initialize(name, options = {})
       @name, @listeners, @adapter =
         (name || ENV["NAME"]), [], nil
 
       redis_connection = Redis.new(:host => (ENV["REDIS_HOST"] || "127.0.0.1"),
                                    :port => (ENV["REDIS_PORT"] || 6739))
       @redis = Redis::Namespace.new(:ns => :slacker, :redis => redis_connection)
+      @logger = options[:logger] || Logger.new(STDERR)
+      @logger.info "Slacker::Robot#initialize"
     end
 
     def respond(regex, &callback)
@@ -70,7 +72,7 @@ module Slacker
       begin
         (Thread.new { adapter.run }).join
       rescue Exception => e
-        puts e.message
+        @logger.error(e)
       end
     end
 

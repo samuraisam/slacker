@@ -3,7 +3,8 @@ require_relative 'plugin'
 module Slacker
   module Plugins
     class UtilPlugin
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /ping/ do |message|
           message.write("Pong!")
         end

@@ -1,6 +1,7 @@
 require 'dotenv'
 require 'websocket-eventmachine-client'
 require 'json'
+require 'logging'
 
 require_relative '../adapter'
 require_relative '../../message'
@@ -11,8 +12,8 @@ module Slacker
     class SlackAdapter < Adapter
       attr_reader :channels, :users, :username
 
-      def initialize(robot)
-        super
+      def initialize(robot, options = {})
+        super(robot, options)
         @name, @token =
           ENV['NAME'], ENV['SLACK_TOKEN']
 
@@ -58,7 +59,7 @@ module Slacker
       def create_worker_pool(queue, size=16)
         Array.new(16) do
           Thread.new do
-            w = QueueWorker.new(queue, self) 
+            w = QueueWorker.new(queue, self, @logger) 
             loop { w.work }
           end
         end
@@ -84,18 +85,19 @@ module Slacker
       end
     end
 
-    class QueueWorker < Struct.new(:queue, :adapter)
+    class QueueWorker < Struct.new(:queue, :adapter, :logger)
       def work
         message = self.queue.pop
 
         begin
+          self.logger.info("Slack::QueueWorker#work #{message['text']}")
           self.adapter.hear({
             :text => message["text"],
             :channel => self.adapter.channel_by_id(message["channel"]),
             :user => self.adapter.user_by_id(message["user"])
           })
         rescue Exception => e
-          puts e
+          self.logger.error(e)
         end
       end
     end

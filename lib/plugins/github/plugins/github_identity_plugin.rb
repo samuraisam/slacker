@@ -10,7 +10,8 @@ module Slacker
         @identity_manager = identity_manager
       end
 
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /^(?:(?:gh|github) me)|(who am i on (?:github|gh)?)/i do |message|
           begin
             github_user = @identity_manager.make_octokit_user(message.user).user

@@ -11,7 +11,8 @@ module Slacker
         @users = user_datastore
       end
 
-      def ready(robot)
+      def ready(robot, options = {})
+        super(robot, options)
         robot.respond /(?:info me|(?:show info|tell me) about|what is)\s?(\w{3,4}-\d*)/i do |message, match|
           issue_key = match[1].upcase
           begin
